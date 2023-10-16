@@ -5,6 +5,7 @@ import com.example.demo.api.dto.UserInfoDto;
 import com.example.demo.biz.dao.UserInfoRepository;
 import com.example.demo.biz.dao.entity.UserInfoEntity;
 import com.example.demo.biz.service.TestDemoService;
+import com.example.demo.biz.utils.RedisUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class TestDemoServiceImpl implements TestDemoService {
   private static final Logger logger = LogManager.getLogger("TestDemoServiceImplLog");
   @Autowired UserInfoRepository userInfoRepository;
+  @Autowired RedisUtil redisUtil;
 
   /** 查询用户信息 */
   @Override
@@ -29,15 +31,24 @@ public class TestDemoServiceImpl implements TestDemoService {
     }
 
     UserInfoDto userInfoDto = new UserInfoDto();
-    UserInfoEntity userInfoEntity =
-        Optional.ofNullable(userInfoRepository.findByUuid(uuid)).orElseGet(UserInfoEntity::new);
-    userInfoDto.setUuid(userInfoEntity.getUuid());
-    userInfoDto.setUserCode(userInfoEntity.getUserCode());
-    userInfoDto.setUserName(userInfoEntity.getUserName());
-    userInfoDto.setMobile(userInfoEntity.getMobile());
-    userInfoDto.setIdentifyType(userInfoEntity.getIdentifyType());
-    userInfoDto.setIdentifyNumber(userInfoEntity.getIdentifyNumber());
-    userInfoDto.setEmail(userInfoEntity.getEmail());
+    UserInfoEntity userInfoEntity = null;
+    // 先查缓存，缓存没有再查DB
+    String userInfoEntityStr = redisUtil.get(uuid);
+    if (StringUtils.isNotBlank(userInfoEntityStr)) {
+      userInfoEntity =
+          JSON.parseObject(
+              userInfoEntityStr, UserInfoEntity.class); // 将存在Redis缓存中的字符串类型数据进行JSON反序列化,转成java对象
+    } else {
+      userInfoEntity =
+          Optional.ofNullable(userInfoRepository.findByUuid(uuid)).orElseGet(UserInfoEntity::new);
+      // 数据查询之后先存进缓存
+      redisUtil.set(userInfoEntity.getUuid(), JSON.toJSONString(userInfoEntity));
+    }
+
+    if (null != userInfoEntity) {
+      // 组装返回前端的对象
+      BeanUtils.copyProperties(userInfoEntity, userInfoDto);
+    }
     return userInfoDto;
   }
 

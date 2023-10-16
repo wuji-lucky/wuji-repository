@@ -1,4 +1,4 @@
-package com.example.demo.biz.util;
+package com.example.demo.biz.config;
 
 import com.example.demo.api.validation.MobileNoValidator;
 import org.springframework.context.annotation.Bean;
