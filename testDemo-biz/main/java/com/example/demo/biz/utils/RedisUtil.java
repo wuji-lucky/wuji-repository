@@ -23,7 +23,7 @@ public class RedisUtil {
   // 存储数据到Redis,并且设置了过期时间
   public void set(String key, String value, int time) {
     ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-    valueOperations.set(key, value, time, TimeUnit.SECONDS);
+    valueOperations.set(key, value, time, TimeUnit.MINUTES);
     // 注:TimeUnit是java.util.concurrent下面的一个枚举类，它提供了将给定时间转换到另一单位时间的方法,
     // 如:long b = TimeUnit.HOURS.convert(58L, TimeUnit.MINUTES);//将58分钟转换为小时
   }

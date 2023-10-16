@@ -42,7 +42,7 @@ public class TestDemoServiceImpl implements TestDemoService {
       userInfoEntity =
           Optional.ofNullable(userInfoRepository.findByUuid(uuid)).orElseGet(UserInfoEntity::new);
       // 数据查询之后先存进缓存
-      redisUtil.set(userInfoEntity.getUuid(), JSON.toJSONString(userInfoEntity));
+      redisUtil.set(userInfoEntity.getUuid(), JSON.toJSONString(userInfoEntity), 5);
     }
 
     if (null != userInfoEntity) {
