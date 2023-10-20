@@ -2,6 +2,7 @@ package com.example.demo.biz.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.api.dto.UserInfoDto;
+import com.example.demo.api.exception.BusinessException;
 import com.example.demo.biz.dao.UserInfoRepository;
 import com.example.demo.biz.dao.entity.UserInfoEntity;
 import com.example.demo.biz.service.TestDemoService;
@@ -12,8 +13,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,6 +57,39 @@ public class TestDemoServiceImpl implements TestDemoService {
       BeanUtils.copyProperties(userInfoEntity, userInfoDto);
     }
     return userInfoDto;
+  }
+
+  /** 分页查询用户信息 */
+  @Override
+  public PageImpl<UserInfoDto> pageQueryUserInfoByUserName(
+      String userName, int pageNumber, int pageSize) {
+    if (StringUtils.isBlank(userName)) {
+      throw new BusinessException("用户姓名不能为空!");
+    }
+
+    List<UserInfoDto> userInfoDtoList = new ArrayList<>();
+
+    Sort sort = Sort.by(Sort.Direction.ASC, "userCode");
+    // 注:前端传入的pageNumber是从0页开始
+    PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+    Page<UserInfoEntity> page = userInfoRepository.findByUserName(userName, pageRequest);
+    Optional.ofNullable(page.getContent())
+        .orElseGet(ArrayList::new)
+        .forEach(
+            (UserInfoEntity userInfoEntity) -> {
+              UserInfoDto userInfoDto = new UserInfoDto();
+              userInfoDto.setUuid(userInfoEntity.getUuid());
+              userInfoDto.setUserCode(userInfoEntity.getUserCode());
+              userInfoDto.setUserName(userInfoEntity.getUserName());
+              userInfoDto.setIdentifyType(userInfoEntity.getIdentifyType());
+              userInfoDto.setIdentifyNumber(userInfoEntity.getIdentifyNumber());
+              userInfoDto.setMobile(userInfoEntity.getMobile());
+              userInfoDto.setEmail(userInfoEntity.getEmail());
+              userInfoDto.setPassword(userInfoEntity.getPassword());
+              userInfoDtoList.add(userInfoDto);
+            });
+
+    return new PageImpl<>(userInfoDtoList, page.getPageable(), page.getTotalElements());
   }
 
   /** 保存用户信息 */

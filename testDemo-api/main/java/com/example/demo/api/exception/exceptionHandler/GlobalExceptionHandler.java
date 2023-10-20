@@ -1,5 +1,6 @@
 package com.example.demo.api.exception.exceptionHandler;
 
+import com.example.demo.api.exception.BusinessException;
 import com.example.demo.api.exception.ValidateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,5 +17,11 @@ public class GlobalExceptionHandler {
     List<String> errorMessages = ex.getErrorMessages();
     String errorMessage = String.join(", ", errorMessages);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+  }
+
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<String> handleBusinessException(BusinessException ex) {
+    String errorMessage = ex.getErrorMessage();
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage); // 返回响应代码以及响应信息
   }
 }

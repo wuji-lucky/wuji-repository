@@ -25,6 +25,15 @@ public class UserInfoDto {
   /** 电子邮件地址 */
   private String email;
 
+  /** 登录密码 */
+  private String password;
+
+  /** 页数 */
+  private Integer pageNumber;
+
+  /** 页面条数 */
+  private Integer pageSize;
+
   public String getUuid() {
     return uuid;
   }
@@ -79,5 +88,29 @@ public class UserInfoDto {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public Integer getPageNumber() {
+    return pageNumber;
+  }
+
+  public void setPageNumber(Integer pageNumber) {
+    this.pageNumber = pageNumber;
+  }
+
+  public Integer getPageSize() {
+    return pageSize;
+  }
+
+  public void setPageSize(Integer pageSize) {
+    this.pageSize = pageSize;
   }
 }
