@@ -11,6 +11,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,12 +31,13 @@ public class TestDemoServiceImpl implements TestDemoService {
   private static final Logger logger = LogManager.getLogger("TestDemoServiceImplLog");
   @Autowired UserInfoRepository userInfoRepository;
   @Autowired RedisUtil redisUtil;
+  @Autowired RabbitTemplate rabbitTemplate;
 
   /** 查询用户信息 */
   @Override
   public UserInfoDto queryUserInfo(String uuid) {
     if (StringUtils.isBlank(uuid)) {
-      return null;
+      throw new BusinessException("uuid不能为空!");
     }
 
     UserInfoDto userInfoDto = new UserInfoDto();
@@ -106,6 +109,19 @@ public class TestDemoServiceImpl implements TestDemoService {
 
     logger.info("新保存的用户数据为:" + JSON.toJSONString(userInfoEntity));
     Object object = userInfoRepository.save(userInfoEntity);
+
+    // 将数据发送到mq消息队列中：
+    rabbitTemplate.convertAndSend(
+        "testDemoExchange", "test-demo-key-A", JSON.toJSONString(userInfoEntity));
     return "用户数据保存成功";
+  }
+
+  /** 创建一个rabbitMQ消费者 */
+  @RabbitListener(queues = "testDemo")
+  public void rabbitMQReceiver(String message) {
+    if (StringUtils.isBlank(message)) {
+      return;
+    }
+    System.out.println("获取到的消息队列中的数据为：message:" + message);
   }
 }

@@ -30,6 +30,12 @@ spring:
     #默认登录的数据库个数
     database: 1
 
+  rabbitmq:
+    host: localhost
+    port: 5672 #控制台默认端口15672
+    username: guest
+    password: guest
+
 #日志配置
 logging:
   file:
