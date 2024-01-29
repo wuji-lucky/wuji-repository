@@ -3,39 +3,36 @@ package com.example.demo.api.dto;
 import java.util.Date;
 
 /**
- * @className: ShopCartInfoDto
+ * @className: TableInfoDto
  * @author: 吴吉
- * @description: 购物车信息表对象类
- * @date: 2024/1/26 10:13
+ * @description: 餐桌管理信息表对象类
+ * @date: 2024/1/26 15:10
  * @version: 1.0
  */
-public class ShopCartInfoDto {
-  /** 购物车id */
-  private String shopCartId;
+public class TableInfoDto {
   /** 桌号 */
   private String tableId;
-  /** 商品id */
-  private String goodsId;
-  /** 商品数量 */
-  private Integer goodsNum;
-  /** 是否提交：1-是，0-否 */
-  private Integer submitFlag;
+
+  /** 二维码id */
+  private String code;
+
+  /** 座位数 */
+  private Integer seatsNum;
+
+  /** 是否处在服务中：1-服务中，0-空闲中 */
+  private Integer inService;
+
   /** 创建时间 */
   private Date createTime;
+
   /** 创建者 */
   private String createBy;
+
   /** 最新更新时间 */
   private Date updateTime;
+
   /** 最新更新者 */
   private String updateBy;
-
-  public String getShopCartId() {
-    return shopCartId;
-  }
-
-  public void setShopCartId(String shopCartId) {
-    this.shopCartId = shopCartId;
-  }
 
   public String getTableId() {
     return tableId;
@@ -45,28 +42,28 @@ public class ShopCartInfoDto {
     this.tableId = tableId;
   }
 
-  public String getGoodsId() {
-    return goodsId;
+  public String getCode() {
+    return code;
   }
 
-  public void setGoodsId(String goodsId) {
-    this.goodsId = goodsId;
+  public void setCode(String code) {
+    this.code = code;
   }
 
-  public Integer getGoodsNum() {
-    return goodsNum;
+  public Integer getSeatsNum() {
+    return seatsNum;
   }
 
-  public void setGoodsNum(Integer goodsNum) {
-    this.goodsNum = goodsNum;
+  public void setSeatsNum(Integer seatsNum) {
+    this.seatsNum = seatsNum;
   }
 
-  public Integer getSubmitFlag() {
-    return submitFlag;
+  public Integer getInService() {
+    return inService;
   }
 
-  public void setSubmitFlag(Integer submitFlag) {
-    this.submitFlag = submitFlag;
+  public void setInService(Integer inService) {
+    this.inService = inService;
   }
 
   public Date getCreateTime() {

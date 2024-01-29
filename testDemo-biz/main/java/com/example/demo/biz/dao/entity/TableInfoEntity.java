@@ -6,34 +6,30 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * @className: ShopCartInfoEntity
+ * @className: TableInfoEntity
  * @author: 吴吉
- * @description: 购物车信息表实体类
- * @date: 2024/1/26 9:31
+ * @description: 餐桌管理信息表实体类
+ * @date: 2024/1/26 15:07
  * @version: 1.0
  */
 @Entity
-public class ShopCartInfoEntity {
-  /** 购物车id */
-  @Id
-  @Column(name = "shop_cart_id")
-  private String shopCartId;
-
+public class TableInfoEntity {
   /** 桌号 */
+  @Id
   @Column(name = "table_id")
   private String tableId;
 
-  /** 商品id */
-  @Column(name = "goods_id")
-  private String goodsId;
+  /** 二维码id */
+  @Column(name = "code")
+  private String code;
 
-  /** 商品数量 */
-  @Column(name = "goods_num")
-  private Integer goodsNum;
+  /** 座位数 */
+  @Column(name = "seats_num")
+  private Integer seatsNum;
 
-  /** 是否提交：1-是，0-否 */
-  @Column(name = "submit_flag")
-  private Integer submitFlag;
+  /** 是否处在服务中：1-服务中，0-空闲中 */
+  @Column(name = "in_service")
+  private Integer inService;
 
   /** 创建时间 */
   @Column(name = "create_time")
@@ -51,14 +47,6 @@ public class ShopCartInfoEntity {
   @Column(name = "update_by")
   private String updateBy;
 
-  public String getShopCartId() {
-    return shopCartId;
-  }
-
-  public void setShopCartId(String shopCartId) {
-    this.shopCartId = shopCartId;
-  }
-
   public String getTableId() {
     return tableId;
   }
@@ -67,28 +55,28 @@ public class ShopCartInfoEntity {
     this.tableId = tableId;
   }
 
-  public String getGoodsId() {
-    return goodsId;
+  public String getCode() {
+    return code;
   }
 
-  public void setGoodsId(String goodsId) {
-    this.goodsId = goodsId;
+  public void setCode(String code) {
+    this.code = code;
   }
 
-  public Integer getGoodsNum() {
-    return goodsNum;
+  public Integer getSeatsNum() {
+    return seatsNum;
   }
 
-  public void setGoodsNum(Integer goodsNum) {
-    this.goodsNum = goodsNum;
+  public void setSeatsNum(Integer seatsNum) {
+    this.seatsNum = seatsNum;
   }
 
-  public Integer getSubmitFlag() {
-    return submitFlag;
+  public Integer getInService() {
+    return inService;
   }
 
-  public void setSubmitFlag(Integer submitFlag) {
-    this.submitFlag = submitFlag;
+  public void setInService(Integer inService) {
+    this.inService = inService;
   }
 
   public Date getCreateTime() {
