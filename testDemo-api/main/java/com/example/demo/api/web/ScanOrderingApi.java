@@ -1,6 +1,7 @@
 package com.example.demo.api.web;
 
 import com.example.demo.api.res.OrderingMenuRes;
+import com.example.demo.api.res.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,7 +17,7 @@ public interface ScanOrderingApi {
   @ApiOperation(value = "扫码查询进入小程序菜单主页", notes = "扫码查询进入小程序菜单主页")
   @ResponseBody
   @GetMapping("/scanOrderingApi/getOrderingMenu")
-  OrderingMenuRes getOrderingMenu(
+  ResponseDto<OrderingMenuRes> getOrderingMenu(
       @RequestParam(value = "tableId", required = true) @ApiParam(value = "桌号") @NotBlank
           String tableId);
 }

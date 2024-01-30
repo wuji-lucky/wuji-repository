@@ -1,6 +1,7 @@
 package com.example.demo.api.res;
 
 import com.example.demo.api.dto.GoodsInfoDto;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -14,9 +15,11 @@ import java.util.List;
 public class OrderingMenuRes {
 
   /** 菜品清单 */
+  @ApiModelProperty(name = "goodsInfoDtos", value = "菜品清单")
   private List<GoodsInfoDto> goodsInfoDtos;
 
   /** 当前购物车菜品数量 */
+  @ApiModelProperty(name = "shopCartGoodsNum", value = "当前购物车菜品数量")
   private Integer shopCartGoodsNum;
 
   public List<GoodsInfoDto> getGoodsInfoDtos() {

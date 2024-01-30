@@ -1,6 +1,7 @@
 package com.example.demo.biz.controller;
 
 import com.example.demo.api.res.OrderingMenuRes;
+import com.example.demo.api.res.ResponseDto;
 import com.example.demo.api.web.ScanOrderingApi;
 import com.example.demo.biz.service.ScanOrderingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,11 @@ public class ScanOrderingController implements ScanOrderingApi {
 
   /** 扫码查询进入小程序菜单主页 */
   @Override
-  public OrderingMenuRes getOrderingMenu(String tableId) {
-    return scanOrderingService.getOrderingMenu(tableId);
+  public ResponseDto<OrderingMenuRes> getOrderingMenu(String tableId) {
+    OrderingMenuRes orderingMenuRes = scanOrderingService.getOrderingMenu(tableId);
+    if (null != orderingMenuRes) {
+      return ResponseDto.success(orderingMenuRes);
+    }
+    return (ResponseDto<OrderingMenuRes>) ResponseDto.fail("查询发生错误");
   }
 }
