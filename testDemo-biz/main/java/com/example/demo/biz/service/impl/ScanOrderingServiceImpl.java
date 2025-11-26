@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,11 +33,19 @@ import java.util.Optional;
 public class ScanOrderingServiceImpl implements ScanOrderingService {
   private static final Logger logger = LogManager.getLogger("ScanOrderingServiceImplLog");
 
-  @Autowired GoodsInfoRepository goodsInfoRepository;
-  @Autowired ShopCartInfoRepository shopCartInfoRepository;
-  @Autowired RedisUtil redisUtil;
+  private final GoodsInfoRepository goodsInfoRepository;
+  private final ShopCartInfoRepository shopCartInfoRepository;
+  private final RedisUtil redisUtil;
 
-  /** 功能：扫码查询进入小程序菜单主页（可能存在多人同时扫码并进行添加菜品或删减菜品） */
+  public ScanOrderingServiceImpl(GoodsInfoRepository goodsInfoRepository,
+                                 ShopCartInfoRepository shopCartInfoRepository,
+                                 RedisUtil redisUtil) {
+    this.goodsInfoRepository = goodsInfoRepository;
+    this.shopCartInfoRepository = shopCartInfoRepository;
+    this.redisUtil = redisUtil;
+  }
+
+    /** 功能：扫码查询进入小程序菜单主页（可能存在多人同时扫码并进行添加菜品或删减菜品） */
   @Override
   public OrderingMenuRes getOrderingMenu(String tableId) {
     System.out.println("*****开始执行扫码查询进入小程序菜单主页 代码程序*****");
