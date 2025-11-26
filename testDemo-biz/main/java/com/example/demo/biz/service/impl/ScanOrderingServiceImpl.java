@@ -49,27 +49,31 @@ public class ScanOrderingServiceImpl implements ScanOrderingService {
     // 查询所有菜品清单
     OrderingMenuRes orderingMenuRes = new OrderingMenuRes();
     // 1、如果有缓存先读取缓存
-    String orderingMenuResStr = redisUtil.get(tableId);
-    if (StringUtils.isNotBlank(orderingMenuResStr)) {
-      orderingMenuRes = JSON.parseObject(orderingMenuResStr, OrderingMenuRes.class);
-    } else {
-      // 2、没有缓存则查询数据库
-      List<GoodsInfoDto> goodsInfoDtoList = new ArrayList<>();
-      Optional.ofNullable(goodsInfoRepository.findAll())
-          .orElseGet(ArrayList::new)
-          .forEach(
-              (GoodsInfoEntity goodsInfoEntity) -> {
-                GoodsInfoDto goodsInfoDto = new GoodsInfoDto();
-                BeanUtils.copyProperties(goodsInfoEntity, goodsInfoDto);
-                goodsInfoDtoList.add(goodsInfoDto);
-              });
+    try {
+      String orderingMenuResStr = redisUtil.get(tableId);
+      if (StringUtils.isNotBlank(orderingMenuResStr)) {
+        orderingMenuRes = JSON.parseObject(orderingMenuResStr, OrderingMenuRes.class);
+      } else {
+        // 2、没有缓存则查询数据库
+        List<GoodsInfoDto> goodsInfoDtoList = new ArrayList<>();
+        Optional.ofNullable(goodsInfoRepository.findAll())
+                .orElseGet(ArrayList::new)
+                .forEach(
+                        (GoodsInfoEntity goodsInfoEntity) -> {
+                          GoodsInfoDto goodsInfoDto = new GoodsInfoDto();
+                          BeanUtils.copyProperties(goodsInfoEntity, goodsInfoDto);
+                          goodsInfoDtoList.add(goodsInfoDto);
+                        });
 
-      // 查询当前购物车菜品数量
-      Integer shopCartGoodsNum =
-          Optional.ofNullable(shopCartInfoRepository.getTotalNumByTableId(tableId)).orElse(0);
+        // 查询当前购物车菜品数量
+        Integer shopCartGoodsNum =
+                Optional.ofNullable(shopCartInfoRepository.getTotalNumByTableId(tableId)).orElse(0);
 
-      orderingMenuRes.setGoodsInfoDtos(goodsInfoDtoList);
-      orderingMenuRes.setShopCartGoodsNum(shopCartGoodsNum);
+        orderingMenuRes.setGoodsInfoDtos(goodsInfoDtoList);
+        orderingMenuRes.setShopCartGoodsNum(shopCartGoodsNum);
+      }
+    } catch (Exception e) {
+      logger.error("进入小程序菜单发生错误",e);
     }
 
     return orderingMenuRes;
