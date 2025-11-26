@@ -1,5 +1,6 @@
 package com.example.demo.biz.controller;
 
+import com.example.demo.api.req.PerGoodReq;
 import com.example.demo.api.res.OrderingMenuRes;
 import com.example.demo.api.res.ResponseDto;
 import com.example.demo.api.web.ScanOrderingApi;
@@ -29,5 +30,14 @@ public class ScanOrderingController implements ScanOrderingApi {
       return ResponseDto.success(orderingMenuRes);
     }
     return (ResponseDto<OrderingMenuRes>) ResponseDto.fail("查询发生错误");
+  }
+
+  /** 添加菜品到当前购物车 */
+  @Override
+  public ResponseDto<String> addToShopCart(PerGoodReq perGoodReq) {
+    if (null == perGoodReq) {
+      return (ResponseDto<String>) ResponseDto.fail("不能将空对象添加进购物车");
+    }
+    return new ResponseDto<String>().setResult(scanOrderingService.addToShopCart(perGoodReq));
   }
 }

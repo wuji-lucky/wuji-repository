@@ -1,13 +1,13 @@
 package com.example.demo.api.web;
 
+import com.example.demo.api.req.PerGoodReq;
 import com.example.demo.api.res.OrderingMenuRes;
 import com.example.demo.api.res.ResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -20,4 +20,9 @@ public interface ScanOrderingApi {
   ResponseDto<OrderingMenuRes> getOrderingMenu(
       @RequestParam(value = "tableId", required = true) @ApiParam(value = "桌号") @NotBlank
           String tableId);
+
+  @ApiOperation(value = "添加商品至购物车", notes = "添加商品至购物车")
+  @ResponseBody
+  @PostMapping("/scanOrderingApi/addToShopCart")
+  ResponseDto<String> addToShopCart(@RequestBody @Validated PerGoodReq perGoodReq);
 }

@@ -1,5 +1,6 @@
 package com.example.demo.api.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,6 +19,8 @@ public class ShopCartInfoDto {
   private String goodsId;
   /** 商品数量 */
   private Integer goodsNum;
+  /** 相同商品价格之和 */
+  private BigDecimal goodsPrice;
   /** 是否提交：1-是，0-否 */
   private Integer submitFlag;
   /** 创建时间 */
@@ -59,6 +62,14 @@ public class ShopCartInfoDto {
 
   public void setGoodsNum(Integer goodsNum) {
     this.goodsNum = goodsNum;
+  }
+
+  public BigDecimal getGoodsPrice() {
+    return goodsPrice;
+  }
+
+  public void setGoodsPrice(BigDecimal goodsPrice) {
+    this.goodsPrice = goodsPrice;
   }
 
   public Integer getSubmitFlag() {
