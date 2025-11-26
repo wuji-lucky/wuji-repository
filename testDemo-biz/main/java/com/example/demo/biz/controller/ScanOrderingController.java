@@ -19,28 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/myDemo")
 public class ScanOrderingController implements ScanOrderingApi {
 
-  private final ScanOrderingService scanOrderingService;
+    private final ScanOrderingService scanOrderingService;
 
     public ScanOrderingController(ScanOrderingService scanOrderingService) {
         this.scanOrderingService = scanOrderingService;
     }
 
-    /** 扫码查询进入小程序菜单主页 */
-  @Override
-  public ResponseDto<OrderingMenuRes> getOrderingMenu(String tableId) {
-    OrderingMenuRes orderingMenuRes = scanOrderingService.getOrderingMenu(tableId);
-    if (null != orderingMenuRes) {
-      return ResponseDto.success(orderingMenuRes);
+    /**
+     * 扫码查询进入小程序菜单主页
+     */
+    @Override
+    public ResponseDto<OrderingMenuRes> getOrderingMenu(String tableId) {
+        OrderingMenuRes orderingMenuRes = scanOrderingService.getOrderingMenu(tableId);
+        if (null != orderingMenuRes) {
+            return ResponseDto.success(orderingMenuRes);
+        }
+        return (ResponseDto<OrderingMenuRes>) ResponseDto.fail("查询发生错误");
     }
-    return (ResponseDto<OrderingMenuRes>) ResponseDto.fail("查询发生错误");
-  }
 
-  /** 添加菜品到当前购物车 */
-  @Override
-  public ResponseDto<String> addToShopCart(PerGoodReq perGoodReq) {
-    if (null == perGoodReq) {
-      return (ResponseDto<String>) ResponseDto.fail("不能将空对象添加进购物车");
+    /**
+     * 添加菜品到当前购物车
+     */
+    @Override
+    public ResponseDto<String> addToShopCart(PerGoodReq perGoodReq) {
+        if (null == perGoodReq) {
+            return (ResponseDto<String>) ResponseDto.fail("不能将空对象添加进购物车");
+        }
+        return new ResponseDto<String>().setResult(scanOrderingService.addToShopCart(perGoodReq));
     }
-    return new ResponseDto<String>().setResult(scanOrderingService.addToShopCart(perGoodReq));
-  }
 }

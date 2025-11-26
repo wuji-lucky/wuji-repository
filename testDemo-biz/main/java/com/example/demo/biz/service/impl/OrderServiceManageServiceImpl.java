@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,9 +23,13 @@ import java.util.UUID;
 public class OrderServiceManageServiceImpl implements OrderServiceManageService {
   private static final Logger logger = LogManager.getLogger("OrderServiceManageServiceImplLog");
 
-  @Autowired private GoodsInfoRepository goodsInfoRepository;
+  private final GoodsInfoRepository goodsInfoRepository;
 
-  /**
+  public OrderServiceManageServiceImpl(GoodsInfoRepository goodsInfoRepository) {
+    this.goodsInfoRepository = goodsInfoRepository;
+  }
+
+    /**
    * @description: 菜品添加或更新
    * @author: wuji
    * @date: 2024/1/29 11:08

@@ -5,7 +5,6 @@ import com.example.demo.api.res.ResponseDto;
 import com.example.demo.api.web.OrderServiceManageApi;
 import com.example.demo.biz.service.OrderServiceManageService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,23 +19,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/myDemo")
 public class OrderServiceManageController implements OrderServiceManageApi {
 
-  @Autowired private OrderServiceManageService orderServiceManageService;
+    private final OrderServiceManageService orderServiceManageService;
 
-  /**
-   * @description: 菜品添加或更新接口
-   * @author: wuji
-   * @date: 2024/1/29 11:05
-   * @param: [goodsInfoDto]
-   * @return: void
-   */
-  @Override
-  public ResponseDto<?> goodsAddOrUpdate(GoodsInfoDto goodsInfoDto) {
-    String result = orderServiceManageService.goodsAddOrUpdate(goodsInfoDto);
-    if (StringUtils.isNotBlank(result)
-        && result.equals(String.valueOf(ResponseDto.Type.SUCCESS.getValue()))) {
-      return ResponseDto.success("数据更新成功");
-    } else {
-      return ResponseDto.fail("数据更新失败");
+    public OrderServiceManageController(OrderServiceManageService orderServiceManageService) {
+        this.orderServiceManageService = orderServiceManageService;
     }
-  }
+
+    /**
+     * @description: 菜品添加或更新接口
+     * @author: wuji
+     * @date: 2024/1/29 11:05
+     * @param: [goodsInfoDto]
+     * @return: void
+     */
+    @Override
+    public ResponseDto<?> goodsAddOrUpdate(GoodsInfoDto goodsInfoDto) {
+        String result = orderServiceManageService.goodsAddOrUpdate(goodsInfoDto);
+        if (StringUtils.isNotBlank(result)
+                && result.equals(String.valueOf(ResponseDto.Type.SUCCESS.getValue()))) {
+            return ResponseDto.success("数据更新成功");
+        } else {
+            return ResponseDto.fail("数据更新失败");
+        }
+    }
 }

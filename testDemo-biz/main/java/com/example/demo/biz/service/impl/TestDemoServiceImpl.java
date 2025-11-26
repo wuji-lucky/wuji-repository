@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,11 +28,17 @@ import java.util.UUID;
 @Service
 public class TestDemoServiceImpl implements TestDemoService {
   private static final Logger logger = LogManager.getLogger("TestDemoServiceImplLog");
-  @Autowired UserInfoRepository userInfoRepository;
-  @Autowired RedisUtil redisUtil;
-  @Autowired RabbitTemplate rabbitTemplate;
+  private final UserInfoRepository userInfoRepository;
+  private final RedisUtil redisUtil;
+  private final RabbitTemplate rabbitTemplate;
 
-  /** 查询用户信息 */
+  public TestDemoServiceImpl(UserInfoRepository userInfoRepository, RedisUtil redisUtil, RabbitTemplate rabbitTemplate) {
+    this.userInfoRepository = userInfoRepository;
+    this.redisUtil = redisUtil;
+    this.rabbitTemplate = rabbitTemplate;
+  }
+
+    /** 查询用户信息 */
   @Override
   public UserInfoDto queryUserInfo(String uuid) {
     if (StringUtils.isBlank(uuid)) {
