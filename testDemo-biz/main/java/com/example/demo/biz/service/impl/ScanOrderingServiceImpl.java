@@ -86,7 +86,9 @@ public class ScanOrderingServiceImpl implements ScanOrderingService {
     return orderingMenuRes;
   }
 
-  /** 添加菜品到当前购物车 */
+  /** 添加菜品到当前购物车
+   *  描述：即当用户每点击菜品后面的'+'号就添加一条菜品数据
+   */
   @Override
   @ClearAndReloadCache(delayMillisSecond = 50000) // 延时双删
   public String addToShopCart(PerGoodReq perGoodReq) {
@@ -96,6 +98,7 @@ public class ScanOrderingServiceImpl implements ScanOrderingService {
     if (StringUtils.isNotBlank(shopCartDtoStr)) {
       // 表里面还没有这个数据结构，后续应该用这个数据结构并删除shopCartInfo那个结构
       ShopCartDto shopCartDto = JSON.parseObject(shopCartDtoStr, ShopCartDto.class);
+
     } else {
 
     }
