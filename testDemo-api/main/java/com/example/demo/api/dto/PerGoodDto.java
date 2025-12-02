@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * @className: PerGoodDto
  * @author: 吴吉
- * @description: TODO
+ * @description: 单个商品信息
  * @date: 2024/5/15 9:14
  * @version: 1.0
  */

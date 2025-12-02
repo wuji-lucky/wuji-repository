@@ -23,9 +23,13 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class ClearAndReloadCacheAspect {
-  @Autowired RedisUtil redisUtil;
+  private final RedisUtil redisUtil;
 
-  /** 切入点:基于注解实现的切入点 加上该注解的都是Aop切面的切入点 */
+  public ClearAndReloadCacheAspect(RedisUtil redisUtil) {
+    this.redisUtil = redisUtil;
+  }
+
+    /** 切入点:基于注解实现的切入点 加上该注解的都是Aop切面的切入点 */
   @Pointcut("@annotation(com.example.demo.biz.validation.annotation.ClearAndReloadCache)")
   public void pointCut() {}
 
